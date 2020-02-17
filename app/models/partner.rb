@@ -3,13 +3,13 @@ class Partner < ApplicationRecord
     validates :document, presence: true, uniqueness: true
     validates :coverageArea, presence: true
     validates :address, presence: true
-    validate :coverageArea_must_be_an_array
+    validate :coverageArea_must_be_a_hash
     validate :address_must_be_a_hash
 
     protected
-    def coverageArea_must_be_an_array
-        if !self.coverageArea.kind_of?(Array)
-            errors.add(:coverageArea, "must be an array")
+    def coverageArea_must_be_a_hash
+        if !self.coverageArea.kind_of?(Hash)
+            errors.add(:coverageArea, "must be a hash")
         end
     end
 

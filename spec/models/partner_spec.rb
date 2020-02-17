@@ -28,10 +28,10 @@ RSpec.describe Partner, type: :model do
                 is_expected.to validate_presence_of(:coverageArea)
             end
 
-            it "coveragaArea must be an array" do
+            it "coveragaArea must be a hash" do
                 partner = build(:partner, coverageArea: "String")
                 partner.valid?
-                expect(partner.errors['coverageArea']).to include("must be an array")
+                expect(partner.errors['coverageArea']).to include("must be a hash")
             end
 
             # it "coverageArea cannot be nil" do
