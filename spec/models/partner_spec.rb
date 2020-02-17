@@ -29,14 +29,14 @@ RSpec.describe Partner, type: :model do
             end
 
             it "coveragaArea must be an array" do
-                partner = build(:partner)
+                partner = build(:partner, coverageArea: "String")
                 partner.valid?
-                expect(partner.errors['coverageArea']).to_not include('must be array')
+                expect(partner.errors['coverageArea']).to include("must be an array")
             end
 
-            it "coverageArea cannot be nil" do
+            # it "coverageArea cannot be nil" do
                 
-            end
+            # end
         end
 
         context "address" do
@@ -45,14 +45,10 @@ RSpec.describe Partner, type: :model do
             end
 
             it "address must be a hash" do
-                partner = build(:partner)
+                partner = build(:partner, address: "String")
                 partner.valid?
-                expect(partner.errors['address']).to_not include('must be hash')
+                expect(partner.errors['address']).to include('must be a hash')
             end
-
-            # it "address hash can contain only type and coordinates keys" do
-            #     partner = build(:partner)
-            # end
         end
     end
 
