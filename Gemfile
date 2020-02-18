@@ -31,6 +31,8 @@ group :development, :test do
   gem 'dotenv-rails'
   gem 'pry-rails'
   gem 'faker'
+  gem 'rgeo'
+  gem 'rgeo-geojson'
 end
 
 group :development do
