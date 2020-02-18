@@ -16,12 +16,6 @@ class PartnersController < ApplicationController
 
   private
     def partner_params
-      params.require(:partner).permit(
-        :tradingName,
-        :ownerName,
-        :document,
-        :coverageArea => [:type, :coordinates => []],
-        :address => [:type, :coordinates => []]
-      )
+      params.require(:partner).permit!
     end
 end
