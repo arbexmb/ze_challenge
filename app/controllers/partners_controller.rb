@@ -2,12 +2,22 @@ require 'rgeo/geo_json'
 
 class PartnersController < ApplicationController
   def create
-    @partner = Partner.new(partner_params)
-
-    if @partner.save
-      render json: @partner, status: 201
+    if params['pdvs'].present? && params['pdvs'].count > 1
+      before_count = Partner.count
+      mass_create(params['pdvs'])
+      if Partner.count > before_count
+        render json: { success: "Records created" }, status: 201
+      else
+        render json: { error: "No record created" }, status: :unprocessable_entity
+      end
     else
-      render json: @partner.errors, status: :unprocessable_entity
+      @partner = Partner.new(partner_params)
+
+      if @partner.save
+        render json: @partner, status: 201
+      else
+        render json: @partner.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -21,14 +31,27 @@ class PartnersController < ApplicationController
     
     partners_available = partners_inside_coverage_area(location)
     if partners_available == nil
-      render json: { error: "Nenhum parceiro disponível" }
+      render json: { error: "No partner available" }
     else
       nearest_partner = find_nearest_partner(location, partners_available)
-      byebug
+      render json: { success: "The nearest partner is #{nearest_partner[:partner]['tradingName']}, at #{nearest_partner[:distance].round(2)} meters" }
     end
   end
 
-  private
+  def validateLngLat
+    render json: { error: "Unsupported values" }
+  end
+
+  protected
+    def mass_create(objects)
+      objects.each do |partner|
+        partner.delete(:id)
+        partner.permit!
+        @partner = Partner.new(partner)
+        @partner.save
+      end
+    end
+
     def partners_inside_coverage_area(location)
       array = Array.new
 
@@ -53,16 +76,17 @@ class PartnersController < ApplicationController
         distance = location.distance(partner_address)
         @distances[partner.id] = distance
       end
-      Partner.find(@distances.min_by{|k,v|v}.first)
+      found = Partner.find(@distances.min_by{|k,v|v}.first)
+      { partner: found.attributes, distance: @distances[found.id] }
     end
 
-  def distance
-    partner = Partner.find(params[:id])
-    partner_address = RGeo::Geographic.spherical_factory.point(partner.address['coordinates'][0], partner.address['coordinates'][1])
-    client_address = RGeo::Geographic.spherical_factory.point(-43.432034, -22.747707)
-    @distance = client_address.distance(partner_address)
-    render json: @distance
-  end
+    def distance
+      partner = Partner.find(params[:id])
+      partner_address = RGeo::Geographic.spherical_factory.point(partner.address['coordinates'][0], partner.address['coordinates'][1])
+      client_address = RGeo::Geographic.spherical_factory.point(-43.432034, -22.747707)
+      @distance = client_address.distance(partner_address)
+      render json: @distance
+    end
 
   private
     def partner_params

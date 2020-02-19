@@ -33,10 +33,6 @@ RSpec.describe Partner, type: :model do
                 partner.valid?
                 expect(partner.errors['coverageArea']).to include("must be a hash")
             end
-
-            # it "coverageArea cannot be nil" do
-                
-            # end
         end
 
         context "address" do

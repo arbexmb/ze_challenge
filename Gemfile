@@ -33,6 +33,7 @@ group :development, :test do
   gem 'faker'
   gem 'rgeo'
   gem 'rgeo-geojson'
+  gem 'rest-client'
 end
 
 group :development do

@@ -1,4 +1,5 @@
 require 'rails_helper'
+require 'rest-client'
 
 RSpec.describe PartnersController, type: :controller do
     it "a partner can be created" do
@@ -38,5 +39,13 @@ RSpec.describe PartnersController, type: :controller do
         partner = create(:partner)
         get :show, params: { id: partner.id }
         expect(JSON.parse response.body).to include(partner.as_json)
+    end
+
+    it "multiple partners can be created" do
+      response = RestClient.get 'https://raw.githubusercontent.com/ZXVentures/ze-code-challenges/master/files/pdvs.json'
+      partners = JSON.parse response.body
+      post :create, params: partners
+
+      expect(Partner.count).to eq(51)
     end
 end
