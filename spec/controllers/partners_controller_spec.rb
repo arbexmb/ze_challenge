@@ -48,4 +48,23 @@ RSpec.describe PartnersController, type: :controller do
 
       expect(Partner.count).to eq(51)
     end
+
+    it "should raise an error if no partner within coverageArea" do
+      get :search, params: {
+        lng: 0,
+        lat: 0
+      }
+
+      expect(response.body).to include('No partner available')
+    end
+
+    it "should raise an error if lat or lng are not float" do
+      get :search, params: {
+        use_route: "partners/search",
+        lng: "abc",
+        lat: "def"
+      }
+
+      expect(response.body).to include('Unsupported values')
+    end
 end
