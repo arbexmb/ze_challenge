@@ -1,12 +1,11 @@
 default: &default
   adapter: postgresql
   encoding: unicode
-  host: <%= ENV["DB_HOST"] %>
-  port: <%= ENV["DB_PORT"] %>
-  username: <%= ENV["DB_USER"] %>
-  password: <%= ENV["DB_PASS"] %>
+  host: db
+  username: postgres
+  password: postgres
   timeout: 5000
-  pool: <%= Integer(ENV.fetch("RAILS_MAX_THREADS") { 5 }) * Integer(ENV.fetch("WEB_CONCURRENCY") { 2 }) %>
+  pool: 5
 
 production:
   <<: *default
@@ -14,8 +13,10 @@ production:
 
 development:
   <<: *default
+  host: db_dev
   database: <%= "#{ENV['DB_NAME']}_development" %>
 
 test:
   <<: *default
+  host: db_dev
   database: <%= "#{ENV['DB_NAME']}_test" %>

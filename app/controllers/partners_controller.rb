@@ -39,8 +39,8 @@ class PartnersController < ApplicationController
     if partners_available == nil
       render json: { error: "No partner available" }
     else
-      nearest_partner = find_nearest_partner(location, partners_available)
-      render json: { success: "The nearest partner is #{nearest_partner[:partner]['tradingName']}, at #{nearest_partner[:distance].round(2)} meters" }
+      nearest_partners = find_nearest_partners(location, partners_available)
+      render json: nearest_partners
     end
   end
 
@@ -83,15 +83,14 @@ class PartnersController < ApplicationController
       end
     end
 
-    def find_nearest_partner(location, partners_available)
-      @distances = {}
+    def find_nearest_partners(location, partners_available)
+      @partners = []
       partners_available.each do |partner|
         partner_address = RGeo::Geographic.spherical_factory.point(partner.address['coordinates'][0], partner.address['coordinates'][1])
         distance = location.distance(partner_address)
-        @distances[partner.id] = distance
+        @partners << [ id: partner.id, tradingName: partner.tradingName, distance: distance.round(2) ]
       end
-      found = Partner.find(@distances.min_by{|k,v|v}.first)
-      { partner: found.attributes, distance: @distances[found.id] }
+      @partners
     end
 
     def distance
