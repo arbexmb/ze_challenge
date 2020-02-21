@@ -4,7 +4,9 @@ This repository contains an application design for the requested project in the 
 
 ## Introduction
 
-The application was developed using Ruby as the programming language, and Rails as the main development framework. As requested, a REST API was created, and its functionalities includes creating a partner and fetching it by its ID, as well as searching for the nearest partner by a giving location (providing coordinates) - I have also created an endpoint to create multiple partners at once, to help the task of correcting the test.
+The application was developed using Ruby as the programming language, and Rails as the main development framework. As requested, a REST API was created, and its functionalities includes creating a partner and fetching it by its ID, as well as searching for the nearest partner by a giving location, whilst providing coordinates.
+
+**OBS:** I have also created an endpoint to create multiple partners at once, to help the task of correcting the test.
 
 Besides that, and also to make the test easier to correct, I have setted up Docker containers in the application infrastructure, making the building process easier. As you can see on the docker-compose file, the application contains two services: one for the application itself, and one for a PostgreSQL database.
 
@@ -38,7 +40,7 @@ Everything should pass!
 
 ## Testing the API endpoints
 
-With the application running, it is time to test the API, through its endpoints. With your favourite REST client, it is possible to make the following request:
+With the application running, it is time to test the API, through its endpoints. With your favourite REST client, it is possible to make the following requests:
 
 ### 1. Creating partner(s)
 
@@ -50,7 +52,7 @@ This request can be used to create a single partner or several partners at once.
 {
   "tradingName": "Adega da Cerveja - Pinheiros",
   "ownerName": "Zé da Silva",
-  "document": "1432132123891/0001", //CNPJ
+  "document": "1432132123891/0001",
   "coverageArea": { 
     "type": "MultiPolygon", 
     "coordinates": [
@@ -67,21 +69,21 @@ This request can be used to create a single partner or several partners at once.
 
 To create multiple partners at once, just send the whole data from this [json](https://github.com/ZXVentures/ze-code-challenges/blob/master/files/pdvs.json) (as it is), via the same POST request. It will create a partner for each object in the array.
 
-IMPORTANT: Do not change in any way the data from the json. Just copy everything from the link above and send it - it will work.
+**IMPORTANT:** Do not change in any way the data from the json. Just copy everything from the link above and send it on the body of the request - it will work.
 
 ### 2. Fetching partner by its ID
 
 - GET - http://127.0.0.1:3000/partners/:id
 
-Once you have created the partners, you can fetch each one of them by its ID, through the second endpoint in the list above.
+Once you have created the partners, you can fetch each one of them by its ID, through this second endpoint.
 
 ### 3. Searching nearest partner
 
 - GET: http://127.0.0.1:3000/partners/search/:lng/:lat
 
-To search the nearest partner, you can pass the coordinates (longitude and latitude) as the parameters of the request mentioned above. The application will check in which partner's coverageArea the address is inside, and it will return the list of partners available to deliver, in order of distance (straight line), being the first one on the list the closest to the address.
+To search the nearest partner of an address, you can pass the coordinates (longitude and latitude) as the parameters of the request mentioned above. The application will check in which partner's coverageArea the address is inside, and it will return the list of partners available to deliver to it, in order of distance (straight line), being the first one on the list the closest to the address.
 
 ## Conclusion
 
-As requested, the API provides a way to search the nearest partner, giving a specific location. I have tried my best to cover it with tests and to make it easy to deploy in the little time I had to develop it. There are a lot of other unit tests which I was not able to create, however I hope what I did is enough to evaluate my skills.
+As requested, the API provides a way to search the nearest partner, whilst giving a specific location. I have tried my best to cover it with tests and to make it easy to deploy, in the little time I had to develop it. There are a lot of other unit tests which I was not able to cover, however I hope what I did is enough to show my skills.
 
