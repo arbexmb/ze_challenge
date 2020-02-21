@@ -2,8 +2,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   host: db
-  username: postgres
-  password: postgres
+  username: docker
+  password: password
   timeout: 5000
   pool: 5
 

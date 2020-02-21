@@ -2,10 +2,16 @@ version: '3'
 services:
   db_dev:
     image: postgres
+    restart: always
+    container_name: postgres_container
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=password
     volumes:
       - ./tmp/db_dev:/var/lib/postgresql/data
   development:
     restart: always
+    container_name: application_container
     build: .
     command: bash -c "dotenv bundle exec rails s -p 3000 -b '0.0.0.0'"
     ports:
