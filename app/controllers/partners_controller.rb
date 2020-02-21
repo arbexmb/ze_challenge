@@ -40,7 +40,8 @@ class PartnersController < ApplicationController
       render json: { error: "No partner available" }
     else
       nearest_partners = find_nearest_partners(location, partners_available)
-      render json: nearest_partners
+      sorted = nearest_partners.sort_by { |hash| hash[0][:distance] }
+      render json: sorted
     end
   end
 
