@@ -67,7 +67,7 @@ This request can be used to create a single partner or several partners at once.
 }
 ```
 
-To create multiple partners at once, just send the whole data from this [json](https://raw.githubusercontent.com/ZXVentures/ze-code-challenges/master/files/pdvs.json){:target="_blank"} (as it is), via the same POST request. It will create a partner for each object in the array.
+To create multiple partners at once, just send the whole data from this [json](https://raw.githubusercontent.com/ZXVentures/ze-code-challenges/master/files/pdvs.json) (as it is), via the same POST request. It will create a partner for each object in the array.
 
 **IMPORTANT:** Do not change the data from the json in any way. Just copy everything from the link above and send it in the body of the request - it will work.
 
