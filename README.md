@@ -63,7 +63,7 @@ This request can be used to create a single partner or several partners at once.
   "address": { 
     "type": "Point",
     "coordinates": [-46.57421, -21.785741]
-  },
+  }
 }
 ```
 
